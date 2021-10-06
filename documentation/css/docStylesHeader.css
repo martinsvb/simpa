@@ -1,0 +1,13 @@
+.docHeader {
+  display: flex;
+}
+
+.docHeaderItem {
+  cursor: pointer;
+  padding: 10px 15px;
+}
+
+.docHeaderItemSelected {
+  background: var(--greyVeryLight);
+  border-radius: 3px;
+}

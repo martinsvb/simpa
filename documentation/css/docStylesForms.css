@@ -1,0 +1,27 @@
+.buttonsWrapper {
+	display: flex;
+	justify-content: flex-start;
+	margin-bottom: 5px;
+}
+
+.buttonsWrapper * {
+	margin-right: 5px;
+}
+
+.button {
+    font-size: 16px;
+    color: var(--grey);
+	cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.buttonSubmit {
+	border-color: var(--greenLight);
+	background: var(--greenLight);
+}
+
+.buttonInfo {
+	border-color: var(--blueLight);
+	background: var(--blueLight);
+}
