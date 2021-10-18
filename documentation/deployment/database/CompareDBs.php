@@ -1,6 +1,6 @@
 <?
 
-include_once(__DIR__ . "./columnsSettings.php");
+include_once(__DIR__ . "/columnsSettings.php");
 
 /**
  * Retrieve missing, new and same tables names

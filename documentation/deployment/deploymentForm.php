@@ -1,6 +1,6 @@
 <?
 
-include_once(__DIR__ . "./deploymentProcess.php");
+include_once(__DIR__ . "/deploymentProcess.php");
 
 use app\helpers\storage;
 

@@ -9,14 +9,9 @@ use app\exception\excep;
  * Custom database exception
  *
  * @property $code, Exception code
- * @property $e, PDO Exception object
- * @property $errorInfo, Error information
- * @property $file, File where exception occured
- * @property $line, Line of wrong code
- * @property $message, Exception message
  * @property $_type, Type of exception
  */
-class excepDatabase extends PDOException
+class excepDatabase
 {
     protected
     $e;
@@ -28,11 +23,36 @@ class excepDatabase extends PDOException
     {
         $this->e = $e;
         $excep = new excep();
-        $excep->handle($this, ['query' => $query, 'params' => $params]);
+        $excep->handle($this, ['query' => $query, 'params' => implode(', ', $params)]);
     }
     
     public function getType()
     {
         return $this->_type;
+    }
+
+    public function getCode()
+    {
+        return (int)$this->e->getCode();
+    }
+
+    public function getFile()
+    {
+        return $this->e->getFile();
+    }
+
+    public function getLine()
+    {
+        return $this->e->getLine();
+    }
+
+    public function getMessage()
+    {
+        return $this->e->getMessage();
+    }
+
+    public function getTraceAsString()
+    {
+        return $this->e->getTraceAsString();
     }
 }

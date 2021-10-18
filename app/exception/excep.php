@@ -34,14 +34,14 @@ class excep
             'message' => $e->getMessage(),
             'trace' => $e->getTraceAsString(),
         ];
-        
+
         if ($addInfo) {
             $excepInfo = $excepInfo + $addInfo;
         }
 
         $csv = new csv();
-        $csv->addData($ds->apiLocation . "_logs/log_exceptions.csv", $excepInfo);
-        
+        $csv->addData($ds->apiData['logs'] . "exceptions.csv", $excepInfo);
+
         $resp = new resp();
         $resp->send($resp->statusCodes['Internal Server Error'], $excepInfo);
     }

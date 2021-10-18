@@ -8,6 +8,10 @@
 	margin-right: 5px;
 }
 
+.buttonsWrapperEnd {
+	justify-content: flex-end;
+}
+
 .button {
     font-size: 16px;
     color: var(--grey);
@@ -24,4 +28,36 @@
 .buttonInfo {
 	border-color: var(--blueLight);
 	background: var(--blueLight);
+}
+
+.loginFormHeader {
+	font-weight: normal;
+	color: var(--grey);
+}
+
+.loginFormWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 80vh;
+}
+
+.loginForm {
+	padding: 20px;
+	border: 1px solid var(--greyLight);
+	border-radius: 3px;
+}
+
+.label {
+    width: 100px;
+    display: inline-block;
+}
+
+.required:after {
+    content:" *";
+    color: red;
+}
+
+.error {
+	border: 1px solid red;
 }

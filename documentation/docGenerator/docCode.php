@@ -20,7 +20,7 @@ function getDocumentation()
         $ds = storage::getInstance();
 
         return array_merge(
-            loadDocumentationInfo($ds->apiLocation, null),
+            loadDocumentationInfo($ds->simpaLocation, null),
             loadDocumentationInfo(
                 $ds->apiModules,
                 str_replace("modules" . DIRECTORY_SEPARATOR, NULL, $ds->apiModules)
@@ -55,13 +55,13 @@ function loadDocumentationInfo(string $location, string | null $locationPattern)
         }
         
         if ($fileinfo->isFile() && $fileinfo->getExtension() === "php") {
-            $className = mb_substr($fileinfo->getFilename(), 0, -4);
             $path = mb_substr($fileinfo->getPathName(), 0, -4);
             $path = str_replace($replacePath, NULL, $path);
-
+            
             $class = new ReflectionClass($path);
-
+            
             $parent = $class->getParentClass();
+            $className = mb_substr($fileinfo->getFilename(), 0, -4);
             if ($class->isAbstract()) {
                 $className .= " (Abstract)";
             }

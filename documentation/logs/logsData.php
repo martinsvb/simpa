@@ -24,13 +24,9 @@ function getLogsData()
     $csv = new csv();
 
     return [
-        $csv->readCsvData($ds->apiLocation . "_logs/log_exceptions.csv"),
+        $csv->readCsvData($ds->apiData['logs'] . "exceptions.csv"),
         $files->openFile(
-            $ds->apiLocation . "_logs/api_error.log",
-            $files->openingMode['readOnly']
-        )->read(),
-        $files->openFile(
-            $ds->apiLocation . "_logs/documentation_error.log",
+            $ds->apiData['logs'] . "error.log",
             $files->openingMode['readOnly']
         )->read(),
     ];

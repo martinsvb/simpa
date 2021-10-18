@@ -9,13 +9,13 @@
     
 <title>API Documentation</title>
 
-<link rel="stylesheet" type="text/css" href="./css/docStyles.css" />
-<link rel="stylesheet" type="text/css" href="./css/docStylesForms.css" />
-<link rel="stylesheet" type="text/css" href="./css/docStylesHeader.css" />
-<link rel="stylesheet" type="text/css" href="./css/docStylesTable.css" />
+<link rel="stylesheet" type="text/css" href="/vendor/martinsvb/simpa/documentation/css/docStyles.css" />
+<link rel="stylesheet" type="text/css" href="/vendor/martinsvb/simpa/documentation/css/docStylesForms.css" />
+<link rel="stylesheet" type="text/css" href="/vendor/martinsvb/simpa/documentation/css/docStylesHeader.css" />
+<link rel="stylesheet" type="text/css" href="/vendor/martinsvb/simpa/documentation/css/docStylesTable.css" />
 
-<script src="./docScripts.js" language="JavaScript" type="text/javascript"></script>
-<script src="./uniqueId.js" language="JavaScript" type="text/javascript"></script>
+<script src="/vendor/martinsvb/simpa/documentation/docScripts.js" language="JavaScript" type="text/javascript"></script>
+<script src="/vendor/martinsvb/simpa/documentation/uniqueId.js" language="JavaScript" type="text/javascript"></script>
 
 </head>
 
@@ -23,35 +23,33 @@
 
 <?
 
-header('Content-Type: text/html; charset=utf-8');
-header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
-header('Pragma: no-cache'); // HTTP 1.0.
-header('Expires: 0'); // Proxies.
+ini_set('session.save_path', realpath($_SERVER['DOCUMENT_ROOT'] . '/tmp'));
 
-mb_internal_encoding("UTF-8");
+session_start();
 
-include_once("../app/helpers/storage.php");
-include_once("./docGenerator/docHeader.php");
-include_once("./docGenerator/docCodeOutput.php");
-include_once("./docGenerator/docDatabaseTablesOutput.php");
-include_once("./deployment/deploymentForm.php");
-include_once("./logs/logsOutput.php");
+include_once(__DIR__ . '/user/login.php');
+include_once(__DIR__ . '/user/register.php');
 
-include_once(__DIR__ . DIRECTORY_SEPARATOR . "../../api_settings/start.php");
+[ 'docUsers' => $docUsers ] = parse_ini_file ($ds->apiSettings . "users.ini", true);
 
-new start();
+if (isset($_GET['user']) && $_GET['user'] === 'logout') {
+    unset($_SESSION['user']);
+    header('Location: /?process=documentation');
+    exit;
+}
 
-$deploymentOperation = isset($_POST['button']) ? DEPLOYMENT_BUTTONS[$_POST['button']] : null;
-
-generateDocHeader($deploymentOperation ? 'deployment' : null);
-
-$docDatabaseTables = generateDocDatabaseTablesOutput();
-
-generateDocOutput($docDatabaseTables, $deploymentOperation ? 'hide' : null);
-
-generateDeploymentForm($deploymentOperation ? null : 'hide', $deploymentOperation, $docDatabaseTables);
-
-generateLogsOutput();
+if (isset($_SESSION['user']) && in_array($_SESSION['user'], array_keys($docUsers))) {
+    include_once(__DIR__ . '/documentation.php');
+}
+else if (
+    !count($docUsers) ||
+    isset($_POST['button']) && ($_POST['button'] === 'registration' || $_POST['button'] === 'register')
+) {
+    registerUser($docUsers);
+}
+else {
+    loginForm($docUsers);
+}
 
 ?>
 

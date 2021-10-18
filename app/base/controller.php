@@ -2,7 +2,7 @@
 
 namespace app\base;
 
-use app\dbConnection\db;
+use app\database\db;
 use app\response\resp;
 use app\helpers\storage;
 use app\exception\excep;

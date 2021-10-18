@@ -2,9 +2,9 @@
 
 namespace db_checker\database;
 
-include_once(__DIR__ . "./CompareDBs.php");
+include_once(__DIR__ . "/CompareDBs.php");
 
-include_once(__DIR__ . "./columnsSettings.php");
+include_once(__DIR__ . "/columnsSettings.php");
 
 /**
  * Queries library

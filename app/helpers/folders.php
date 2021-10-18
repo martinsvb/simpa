@@ -54,19 +54,19 @@ class folders
         $folders = [];
         $files = [];
         try {
-            $foldersIterator = new DirectoryIterator($this->ds->documents."/$folder");
+            $foldersIterator = new DirectoryIterator($this->ds->apiData['documents']."/$folder");
             foreach ($foldersIterator as $fileinfo) {
                 // Before directory (../)
                 if ($fileinfo->isDot() && mb_strlen($fileinfo->getBasename()) == 2) {
                     
                     // Root directory
-                    if ($fileinfo->getPath()==$this->ds->documents) $folders[0] = "Root";
+                    if ($fileinfo->getPath()==$this->ds->apiData['documents']) $folders[0] = "Root";
                     
                     // Subdirectory
                     else {
                         $folders[$cFo]['name'] = "<-";
                         $folders[$cFo]['path'] = $folders[0] = preg_replace(
-                            "#".$this->ds->documents."/#",
+                            "#".$this->ds->apiData['documents']."/#",
                             NULL,
                             $fileinfo->getPath()
                         );
@@ -75,7 +75,7 @@ class folders
                             ? preg_replace("#/([^/]+)$#", NULL, $folders[$cFo]['path'])
                             : NULL;
                         $folders[$cFo]['count'] = iterator_count(
-                            new DirectoryIterator($this->ds->documents."/".$folders[$cFo]['path'])
+                            new DirectoryIterator($this->ds->apiData['documents']."/".$folders[$cFo]['path'])
                         ) - 2;
                         $cFo++;
                     }
@@ -84,12 +84,12 @@ class folders
                 elseif ($fileinfo->isDir() && !$fileinfo->isDot()) {
                     $folders[$cFo]['name'] = $fileinfo->getBasename();
                     $folders[$cFo]['path'] = preg_replace(
-                        "#".$this->ds->documents."/#",
+                        "#".$this->ds->apiData['documents']."/#",
                         NULL,
                         $fileinfo->getPathName()
                     );
                     $folders[$cFo]['count'] = iterator_count(
-                        new DirectoryIterator($this->ds->documents."/".$folders[$cFo]['path'])
+                        new DirectoryIterator($this->ds->apiData['documents']."/".$folders[$cFo]['path'])
                     ) - 2;
                     $cFo++;
                 }
@@ -97,7 +97,7 @@ class folders
                 elseif ($fileinfo->isFile()) {
                     $files[$cFi]['name'] = $fileinfo->getFilename();
                     $files[$cFi]['path'] = preg_replace(
-                        "#".$this->ds->documents."/#",
+                        "#".$this->ds->apiData['documents']."/#",
                         NULL,
                         $fileinfo->getPath()
                     );

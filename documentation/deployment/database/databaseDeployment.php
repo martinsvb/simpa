@@ -1,8 +1,8 @@
 <?
 
-include_once(__DIR__ . "./databaseDeploymentBackUp.php");
-include_once(__DIR__ . "./databaseDeploymentSchemaUpdate.php");
-include_once(__DIR__ . "./Queries.php");
+include_once(__DIR__ . "/databaseDeploymentBackUp.php");
+include_once(__DIR__ . "/databaseDeploymentSchemaUpdate.php");
+include_once(__DIR__ . "/Queries.php");
 
 use app\database\db;
 use app\helpers\storage;

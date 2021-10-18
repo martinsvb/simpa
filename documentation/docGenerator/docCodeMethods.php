@@ -9,7 +9,7 @@ function getMethodsDocumentation(array $methods, string $namespace, string $item
     foreach($methods as $m) {
         $methodsDocResult[] = ['name' => $m->name];
         $currMeth = count($methodsDocResult) - 1;
-        
+
         $methodsDocResult[$currMeth]['type'] = $m->isPublic()
             ? "Public"
             : (

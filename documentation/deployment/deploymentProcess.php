@@ -1,6 +1,6 @@
 <?
 
-include_once __DIR__ . "./database/databaseDeployment.php";
+include_once __DIR__ . "/database/databaseDeployment.php";
 
 use app\helpers\csv;
 use app\helpers\folders;
@@ -13,7 +13,7 @@ function deploymentProcess(string | null $deploymentOperation, array $docDatabas
 	$deleteAfterDeployment = [];
 	
 	$folders = new folders($ds);
-	[ 'folders' => $deploymentFolders ] = $folders->readFullFolder($ds->apiDeployments);
+	[ 'folders' => $deploymentFolders ] = $folders->readFullFolder($ds->apiData['deployments']);
 	if ($deploymentOperation === 'processDeployment') {
 		
 		[ 'deploymentId' => $deploymentId ] = $_POST;
@@ -22,9 +22,10 @@ function deploymentProcess(string | null $deploymentOperation, array $docDatabas
 			$deploymentResult = [
 				'deploymentId' => $deploymentId,
 				'deploymentUtcDateTime' => $ds->time['dateTimeString'],
+				'user' => $_SESSION['user'],
 			];
 			
-			$deploymentFolder = $ds->apiDeployments . $deploymentId;
+			$deploymentFolder = $ds->apiData['deployments'] . $deploymentId;
 	
 			[ $folderCreated, $folderExists ] = $folders->createFolder(
 				$deploymentFolder,

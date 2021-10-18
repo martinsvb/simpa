@@ -1,8 +1,8 @@
 <?
 
-include_once(__DIR__ . "./CompareDBs.php");
+include_once(__DIR__ . "/CompareDBs.php");
 
-include_once(__DIR__ . "./columnsSettings.php");
+include_once(__DIR__ . "/columnsSettings.php");
 
 use app\helpers\csv;
 use app\helpers\folders;

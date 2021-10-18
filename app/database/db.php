@@ -27,15 +27,6 @@ class db extends PDO
         PDO::ATTR_AUTOCOMMIT, false,
     ],
     
-    $_fetchMethods = [
-        'assoc' => PDO::FETCH_ASSOC,
-        'num' => PDO::FETCH_NUM,
-        'column' => PDO::FETCH_COLUMN,
-        'key_pair' => PDO::FETCH_KEY_PAIR,
-        'unique' => PDO::FETCH_UNIQUE,
-        'group' => PDO::FETCH_GROUP
-    ],
-    
     $selectionQue = ['SELECT', 'SHOW'];
     
     private
@@ -45,7 +36,16 @@ class db extends PDO
     $_excep,
     $_queries,
     $_affectedIds;
-    
+
+    public $fetchMethods = [
+        'assoc' => PDO::FETCH_ASSOC,
+        'num' => PDO::FETCH_NUM,
+        'column' => PDO::FETCH_COLUMN,
+        'key_pair' => PDO::FETCH_KEY_PAIR,
+        'unique' => PDO::FETCH_UNIQUE,
+        'group' => PDO::FETCH_GROUP
+    ];
+
     /**
      * Create DB connection
      * 
@@ -87,12 +87,20 @@ class db extends PDO
      *
      * @return array $data
      */
-    public function selection(string $query, $params = [], $fetch = 'fetchAll', $fetchMethod = 'assoc')
-    {
+    public function selection(
+        string $query,
+        array $params = [],
+        string $fetch = 'fetchAll',
+        $fetchMethod = PDO::FETCH_ASSOC
+    ) {
+        $data = [];
+        
         try {
             $this->_stmt = $this->prepare($query);
             $this->_stmt->execute($params);
-            $data = $this->_stmt->$fetch(self::$_fetchMethods[$fetchMethod]);
+            $data = $fetch === 'fetchAll'
+                ? $this->_stmt->fetchAll($fetchMethod)
+                : $this->_stmt->fetch($fetchMethod);
         }
         catch (\PDOException $e) {
             throw new excepDatabase($e, $query, $params);

@@ -4,15 +4,13 @@ include_once(__DIR__ . DIRECTORY_SEPARATOR . "logsData.php");
 
 function generateLogsOutput()
 {
-	[ $exceptions, $apiErrorLog, $docErrorLog ] = getLogsData();
+	[ $exceptions, $errorLog ] = getLogsData();
 	
 	echo "<div class='docBodyItem hide' id='logsBody'>";
 
 	printExceptions("Exceptions", $exceptions);
 
-	printErrorLogs("API error log", $apiErrorLog);
-
-	printErrorLogs("Documentation error log", $docErrorLog);
+	printErrorLogs("Error log", $errorLog);
 
 	echo "</div>";
 }

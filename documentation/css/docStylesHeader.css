@@ -1,3 +1,8 @@
+.docHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 .docHeader {
   display: flex;
 }
@@ -10,4 +15,15 @@
 .docHeaderItemSelected {
   background: var(--greyVeryLight);
   border-radius: 3px;
+}
+
+.userName {
+  line-height: 4;
+  color: var(--grey);
+}
+
+.logoutLink {
+  line-height: 4;
+  text-decoration: none;
+  color: var(--blue);
 }

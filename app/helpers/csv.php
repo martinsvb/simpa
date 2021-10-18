@@ -21,19 +21,33 @@ class csv
     }
     
     /**
-     *  Check if proper csv file path is set
+     *  Check if csv file path exists
      */
-    private function _checkFile(string $file)
+    private function _checkFileExists(string $file)
     {
         try {
-            if (!preg_match('/\.csv/', $file)) {
-                throw new excepFiles("Inserted file isn't proper csv.");
+            if (!file_exists($file)) {
+                throw new excepFiles("Inserted file $file doesn't exists.");
             }
         } catch (excepFiles $e) {
             $this->_excep->handle($e);
         }
     }
-    
+
+    /**
+     *  Check if proper csv file type path is set
+     */
+    private function _checkFileType(string $file)
+    {
+        try {
+            if (!preg_match('/\.csv/', $file)) {
+                throw new excepFiles("Inserted file $file isn't proper csv.");
+            }
+        } catch (excepFiles $e) {
+            $this->_excep->handle($e);
+        }
+    }
+
     /**
      *  Add data to the end of selected CSV file
      *
@@ -42,7 +56,7 @@ class csv
      */
     public function addData(string $file, array $data)
     {
-        $this->_checkFile($file);
+        $this->_checkFileType($file);
         $csvFile = new \SplFileObject($file, 'a');
         $csvFile->fputcsv($data);
         $csvFile = null;
@@ -56,7 +70,7 @@ class csv
      */
     public function addMultilineData(string $file, array $data)
     {
-        $this->_checkFile($file);
+        $this->_checkFileType($file);
         $csvFile = new \SplFileObject($file, 'a');
         foreach ($data as $dataItem) {
             $csvFile->fputcsv(is_array($dataItem) ? $dataItem : [$dataItem]);
@@ -69,8 +83,10 @@ class csv
      */
     public function readCsvData(string $file): array
     {
-        $this->_checkFile($file);
+        $this->_checkFileType($file);
+        $this->_checkFileExists($file);
         $csvData = [];
+
         $csvFile = new \SplFileObject($file);
         $csvFile->setFlags(\SplFileObject::READ_CSV);
         foreach ($csvFile as $rowData) {

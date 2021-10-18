@@ -120,7 +120,7 @@ class router
     private function _run()
     {
         $contr = $this->_modulesPath.$this->_action;
-        
+
         if (file_exists($this->_modulesPath.'authorize/'.$this->_action.'.php')) {
             $this->_checkAuth();
             $contr = $this->_modulesPath.'authorize/'.$this->_action;
