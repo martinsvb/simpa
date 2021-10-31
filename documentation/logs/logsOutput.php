@@ -1,6 +1,11 @@
 <?
 
-include_once(__DIR__ . DIRECTORY_SEPARATOR . "logsData.php");
+namespace documentation\logs\logsOutput;
+
+use function documentation\generator\docView\printHeader;
+use function documentation\logs\logsData\getLogsData;
+
+use const documentation\logs\logsData\LOGS_COLUMNS;
 
 function generateLogsOutput()
 {

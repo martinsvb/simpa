@@ -1,6 +1,8 @@
 <?
 
-include_once(__DIR__ . "/deploymentProcess.php");
+namespace documentation\deployment\deploymentForm;
+
+use function documentation\deployment\deploymentProcess\deploymentProcess;
 
 use app\helpers\storage;
 
@@ -14,8 +16,11 @@ const DEPLOYMENT_TABLE_COLUMNS = [
 	'Description'
 ];
 
-function generateDeploymentForm(string | null $hide, string | null $deploymentOperation, array $docDatabaseTables)
-{
+function generateDeploymentForm(
+	string | null $hide,
+	string | null $deploymentOperation,
+	array $docDatabaseTables
+) {
 	$deploymentOperations = [
 		'dbBackUp' => [
 			'title' => 'Database back up',

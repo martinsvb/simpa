@@ -1,10 +1,12 @@
 <?
 
+namespace documentation\generator\docCodeOutput;
+
 use app\helpers\storage;
 use app\router\routes;
 
-include_once(__DIR__ . DIRECTORY_SEPARATOR . "docCode.php");
-include_once(__DIR__ . DIRECTORY_SEPARATOR . "docView.php");
+use function documentation\generator\docCode\getDocumentation;
+use function documentation\generator\docView\{getMethodComment, printHeader, printComment, printProperty};
 
 function generateDocOutput(array $docDatabaseTables, string | null $hide)
 {

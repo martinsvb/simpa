@@ -1,6 +1,9 @@
 <?
 
-include_once __DIR__ . "/database/databaseDeployment.php";
+namespace documentation\deployment\deploymentProcess;
+
+use function documentation\deployment\database\databaseDeploymentBackUp\dbBackUp;
+use function documentation\deployment\database\databaseDeploymentSchemaUpdate\dbSchemaUpdate;
 
 use app\helpers\csv;
 use app\helpers\folders;

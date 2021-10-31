@@ -1,14 +1,16 @@
 <?
 
-include_once(__DIR__ . "/CompareDBs.php");
+namespace documentation\deployment\database\databaseDeploymentSchemaUpdate;
 
-include_once(__DIR__ . "/columnsSettings.php");
+use function documentation\deployment\database\columnsSettings\getColumnsQueryString;
+use function documentation\deployment\database\compareDBs\{getColumnsQueries, getTablesInfo};
+use function documentation\deployment\database\databaseDeployment\{getDbConnection, getDatabaseTablesDetails};
+
+use documentation\deployment\database\Queries;
 
 use app\helpers\csv;
 use app\helpers\folders;
 use app\helpers\storage;
-use db_checker\database\Queries;
-use db_checker\checker\CompareDBs;
 
 function dbSchemaUpdate(array $docDatabaseTables, string $dbSchemaUpdateFolder)
 {

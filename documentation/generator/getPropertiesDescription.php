@@ -1,5 +1,7 @@
 <?
 
+namespace documentation\generator\getPropertiesDescription;
+
 /**
  *  Create description array from properties and comments
  */

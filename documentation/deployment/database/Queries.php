@@ -1,10 +1,9 @@
 <?
 
-namespace db_checker\database;
+namespace documentation\deployment\database;
 
-include_once(__DIR__ . "/CompareDBs.php");
-
-include_once(__DIR__ . "/columnsSettings.php");
+use function documentation\deployment\database\columnsSettings\{getColumnQueryString, getColumnsQueryString};
+use function documentation\deployment\database\compareDBs\getColumnsFieldNames;
 
 /**
  * Queries library
@@ -101,7 +100,7 @@ class Queries
     public static function deleteColumns($db, string $table, array $columns, array $tableColumns)
     {
         $deleteColumnsResult = [];
-        $searchColumns = array_reduce($tableColumns, 'addColumnField', []);
+        $searchColumns = getColumnsFieldNames($tableColumns);
 
         foreach ($columns as $colIdx => $column) {
             $delColIdx = array_search($column, $searchColumns);
@@ -123,7 +122,7 @@ class Queries
     public static function modifyColumns($db, string $table, array $columns, array $tableColumns)
     {
         $modifyColumnsResult = [];
-        $searchColumns = array_reduce($tableColumns, 'addColumnField', []);
+        $searchColumns = getColumnsFieldNames($tableColumns);
 
         foreach ($columns as $column => $columnQueryString) {
             $modifyColIdx = array_search($column, $searchColumns);

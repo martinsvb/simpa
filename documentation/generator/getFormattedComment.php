@@ -1,5 +1,7 @@
 <?
 
+namespace documentation\generator\getFormattedComment;
+
 /**
  *  Format class comment to representation form
  *

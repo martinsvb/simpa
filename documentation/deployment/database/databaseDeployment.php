@@ -1,12 +1,11 @@
 <?
 
-include_once(__DIR__ . "/databaseDeploymentBackUp.php");
-include_once(__DIR__ . "/databaseDeploymentSchemaUpdate.php");
-include_once(__DIR__ . "/Queries.php");
+namespace documentation\deployment\database\databaseDeployment;
+
+use documentation\deployment\database\Queries;
 
 use app\database\db;
 use app\helpers\storage;
-use db_checker\database\Queries;
 
 function getDbConnection()
 {

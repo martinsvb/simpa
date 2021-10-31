@@ -1,5 +1,7 @@
 <?
 
+namespace documentation\deployment\database\columnsSettings;
+
 /**
  * Prepare multi columns query string
  */

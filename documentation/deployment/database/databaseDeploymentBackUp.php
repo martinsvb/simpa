@@ -1,5 +1,9 @@
 <?
 
+namespace documentation\deployment\database\databaseDeploymentBackUp;
+
+use function documentation\deployment\database\databaseDeployment\{getDbConnection, getDatabaseTablesDetails};
+
 use app\helpers\csv;
 use app\helpers\folders;
 use app\helpers\storage;

@@ -1,5 +1,7 @@
 <?
 
+namespace documentation\generator\docDatabaseTables;
+
 use app\helpers\csv;
 use app\helpers\files;
 use app\helpers\storage;

@@ -1,6 +1,8 @@
 <?
 
-include_once(__DIR__ . DIRECTORY_SEPARATOR . "docView.php");
+namespace documentation\generator\docHeader;
+
+use function documentation\generator\docView\printHeader;
 
 function generateDocHeader(string | null $selectedDocHeaderId)
 {

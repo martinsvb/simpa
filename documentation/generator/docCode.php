@@ -1,10 +1,12 @@
 <?
 
+namespace documentation\generator\docCode;
+
 use app\helpers\storage;
 
-include_once __DIR__ . DIRECTORY_SEPARATOR . "docCodeMethods.php";
-include_once __DIR__ . DIRECTORY_SEPARATOR . "getFormattedComment.php";
-include_once __DIR__ . DIRECTORY_SEPARATOR . "getPropertiesDescription.php";
+use function documentation\generator\docCodeMethods\getMethodsDocumentation;
+use function documentation\generator\getFormattedComment\getFormattedClassComment;
+use function documentation\generator\getPropertiesDescription\getPropertiesDescription;
 
 const NO_PROCESS = [
     "appData.php",
@@ -57,8 +59,8 @@ function loadDocumentationInfo(string $location, string | null $locationPattern)
         if ($fileinfo->isFile() && $fileinfo->getExtension() === "php") {
             $path = mb_substr($fileinfo->getPathName(), 0, -4);
             $path = str_replace($replacePath, NULL, $path);
-            
-            $class = new ReflectionClass($path);
+  
+            $class = new \ReflectionClass($path);
             
             $parent = $class->getParentClass();
             $className = mb_substr($fileinfo->getFilename(), 0, -4);

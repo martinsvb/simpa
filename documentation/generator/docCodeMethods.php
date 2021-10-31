@@ -1,6 +1,8 @@
 <?
 
-include_once __DIR__ . DIRECTORY_SEPARATOR . "getFormattedComment.php";
+namespace documentation\generator\docCodeMethods;
+
+use function documentation\generator\getFormattedComment\getFormattedMethodComment;
 
 function getMethodsDocumentation(array $methods, string $namespace, string $item)
 {

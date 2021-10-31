@@ -1,6 +1,8 @@
 <?
 
-include_once(__DIR__ . "/columnsSettings.php");
+namespace documentation\deployment\database\compareDBs;
+
+use function documentation\deployment\database\columnsSettings\getColumnQueryString;
 
 /**
  * Retrieve missing, new and same tables names
@@ -52,8 +54,14 @@ function getColumnsQueries(array $sameTables, array $docDatabaseTables, array $t
     ];
 }
 
-function addColumnField(array $acc, array $item) {
-    return [...$acc, $item['Field']];
+function getColumnsFieldNames(array $columns): array {
+    return array_reduce(
+        $columns,
+        function (array $acc, array $item): array {
+            return [...$acc, $item['Field']];
+        },
+        []
+    );
 }
 
 /**
@@ -63,8 +71,8 @@ function getMissingColumns(array $sourceCols, array $targetCols): array | null
 {
     $missingColumns = null;
 
-    $newColumns = array_reduce($sourceCols, 'addColumnField', []);
-    $searchColumns = array_reduce($targetCols, 'addColumnField', []);
+    $newColumns = getColumnsFieldNames($sourceCols);
+    $searchColumns = getColumnsFieldNames($targetCols);
 
     foreach ($newColumns as $colIdx => $column) {
         if (!in_array($column, $searchColumns)) {
@@ -82,8 +90,8 @@ function getSameColumnsDiff(array $sourceCols, array $targetCols): array | null
 {
     $sameColumnsDiff = null;
 
-    $newColumns = array_reduce($sourceCols, 'addColumnField', []);
-    $searchColumns = array_reduce($targetCols, 'addColumnField', []);
+    $newColumns = getColumnsFieldNames($sourceCols);
+    $searchColumns = getColumnsFieldNames($targetCols);
 
     foreach ($newColumns as $newColIdx => $column) {
         if (in_array($column, $searchColumns)) {

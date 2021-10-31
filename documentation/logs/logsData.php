@@ -1,5 +1,7 @@
 <?
 
+namespace documentation\logs\logsData;
+
 use app\helpers\csv;
 use app\helpers\files;
 use app\helpers\storage;

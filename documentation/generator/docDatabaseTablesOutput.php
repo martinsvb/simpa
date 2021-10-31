@@ -1,9 +1,12 @@
 <?
 
-include_once __DIR__ . DIRECTORY_SEPARATOR . "../deployment/database/databaseDeployment.php";
+namespace documentation\generator\docDatabaseTablesOutput;
 
-include_once(__DIR__ . DIRECTORY_SEPARATOR . "docDatabaseTables.php");
-include_once(__DIR__ . DIRECTORY_SEPARATOR . "docView.php");
+use function documentation\deployment\database\databaseDeployment\{getDbConnection, getDatabaseTablesDetails};
+use function documentation\generator\docDatabaseTables\getDatabaseTablesDocumentation;
+use function documentation\generator\docView\printHeader;
+
+use const documentation\generator\docDatabaseTables\TABLE_COLUMNS;
 
 function generateDocDatabaseTablesOutput()
 {

@@ -1,5 +1,7 @@
 <?
 
+namespace documentation\generator\docView;
+
 function printHeader(
     string $text,
     int $size,
