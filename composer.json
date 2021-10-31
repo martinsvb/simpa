@@ -16,9 +16,29 @@
     },
     "autoload": {
         "psr-4": {
-            "app\\": "app/",
-            "documentation\\": "documentation/"
-        }
+            "app\\": "app/"
+        },
+        "files": [
+            "documentation/deployment/deploymentForm.php",
+            "documentation/deployment/deploymentProcess.php",
+            "documentation/deployment/database/columnsSettings.php",
+            "documentation/deployment/database/compareDBs.php",
+            "documentation/deployment/database/databaseDeployment.php",
+            "documentation/deployment/database/databaseDeploymentBackUp.php",
+            "documentation/deployment/database/databaseDeploymentSchemaUpdate.php",
+            "documentation/deployment/database/Queries.php",
+            "documentation/generator/docCode.php",
+            "documentation/generator/docCodeMethods.php",
+            "documentation/generator/docCodeOutput.php",
+            "documentation/generator/docDatabaseTables.php",
+            "documentation/generator/docDatabaseTablesOutput.php",
+            "documentation/generator/docHeader.php",
+            "documentation/generator/docView.php",
+            "documentation/generator/getFormattedComment.php",
+            "documentation/generator/getPropertiesDescription.php",
+            "documentation/logs/logsData.php",
+            "documentation/logs/logsOutput.php"
+        ]
     },
     "config": {
         "optimize-autoloader": true
