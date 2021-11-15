@@ -3,6 +3,8 @@
 namespace documentation\deployment\deploymentForm;
 
 use function documentation\deployment\deploymentProcess\deploymentProcess;
+use function documentation\deployment\deploymentsList\getDeploymentsData;
+use function documentation\generator\docView\{printHeader, printProperty};
 
 use app\helpers\storage;
 
@@ -67,6 +69,22 @@ function generateDeploymentForm(
 	echo "</form>";
 	
 	deploymentProcess($deploymentOperation, $docDatabaseTables);
+
+	$deploymentsData = getDeploymentsData();
+
+	printHeader('Deployments list', 2, 'deployments-list', false, ['mrgBottom' => 5]);
+	echo "<div id='deployments-list-body' class='mrgBottom-10 hide'>\n";
+	foreach ($deploymentsData as $deploymentId => $deploymentResult) {
+		printHeader($deploymentId, 3, $deploymentId);
+		echo "<div id='$deploymentId-body' class='mrgBottom-10 hide'>\n";
+		foreach ($deploymentResult as $deploymentProperty => $deploymentPropertyValue) {
+			if ($deploymentId !== $deploymentPropertyValue) {
+				printProperty($deploymentProperty, $deploymentPropertyValue, 1, 1, []);
+			}
+		}
+		echo "</div>\n";
+	}
+	echo "</div>";
 
 	echo "</div>";
 }

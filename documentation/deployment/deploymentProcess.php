@@ -4,10 +4,13 @@ namespace documentation\deployment\deploymentProcess;
 
 use function documentation\deployment\database\databaseDeploymentBackUp\dbBackUp;
 use function documentation\deployment\database\databaseDeploymentSchemaUpdate\dbSchemaUpdate;
+use function documentation\generator\docView\{printHeader, printProperty};
 
 use app\helpers\csv;
 use app\helpers\folders;
 use app\helpers\storage;
+
+const DEPLOYMENT_RESULT = "deployment_result_";
 
 function deploymentProcess(string | null $deploymentOperation, array $docDatabaseTables)
 {
@@ -21,10 +24,14 @@ function deploymentProcess(string | null $deploymentOperation, array $docDatabas
 		
 		[ 'deploymentId' => $deploymentId ] = $_POST;
 		
-		if (isset($deploymentId) && !in_array($deploymentId, $deploymentFolders)) {
+		if (
+			isset($deploymentId) &&
+			!in_array($deploymentId, $deploymentFolders) &&
+			(isset($_POST['dbBackUp']) || isset($_POST['dbSchemaUpdate']))
+		) {
 			$deploymentResult = [
 				'deploymentId' => $deploymentId,
-				'deploymentUtcDateTime' => $ds->time['dateTimeString'],
+				'dateTime (UTC)' => $ds->time['dateTimeString'],
 				'user' => $_SESSION['user'],
 			];
 			
@@ -51,7 +58,7 @@ function deploymentProcess(string | null $deploymentOperation, array $docDatabas
 				}
 			}
 
-			$deploymentResultFileName = "deployment_result_$deploymentId.csv";
+			$deploymentResultFileName = DEPLOYMENT_RESULT . "$deploymentId.csv";
 
 			$csv = new csv();
 			$csv->addMultilineData(
@@ -64,7 +71,15 @@ function deploymentProcess(string | null $deploymentOperation, array $docDatabas
 				"deployment_$deploymentId",
 				$deleteAfterDeployment
 			);
-			printArr($deploymentResult);
+			
+			printHeader('Deployment result', 3);
+			foreach ($deploymentResult as $deploymentProperty => $deploymentPropertyValue) {
+				printProperty($deploymentProperty, $deploymentPropertyValue, 1, 1, []);
+			}
+		}
+		else if (!isset($_POST['dbBackUp']) && !isset($_POST['dbSchemaUpdate'])) {
+			echo "<p>Deployment wasn't processed.<br />
+			Please, select desired deployment's operations.</p>";
 		}
 		else {
 			echo "<p>Deployment id: $deploymentId was already processed.<br />
