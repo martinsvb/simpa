@@ -19,13 +19,15 @@ function getDbConnection()
 			$dbConnection['host'],
 			$dbConnection['user'],
 			$dbConnection['password'],
-			$dbConnection['database']
+			$dbConnection['database'],
+            $dbConnection['databasePort'],
 		),
 		new db(
 			$dbConnection['host'],
 			$dbConnection['user'],
 			$dbConnection['password'],
-			'information_schema'
+			'information_schema',
+            $dbConnection['databasePort'],
 		)
 	];
 }

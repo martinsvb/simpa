@@ -14,10 +14,16 @@
 
 .button {
     font-size: 16px;
-    color: var(--grey);
+    color: var(--greyDark);
 	cursor: pointer;
     padding: 5px 10px;
     border-radius: 3px;
+}
+
+.button:disabled {
+	cursor: default;
+	border-color: var(--greyLight);
+	background: var(--greyVeryLight);
 }
 
 .buttonSubmit {
@@ -30,9 +36,14 @@
 	background: var(--blueLight);
 }
 
+.buttonDanger {
+	border-color: var(--red);
+	background: var(--red);
+}
+
 .loginFormHeader {
 	font-weight: normal;
-	color: var(--grey);
+	color: var(--greyDark);
 }
 
 .loginFormWrapper {
@@ -55,9 +66,9 @@
 
 .required:after {
     content:" *";
-    color: red;
+    color: var(--red);
 }
 
 .error {
-	border: 1px solid red;
+	border: 1px solid var(--red);
 }

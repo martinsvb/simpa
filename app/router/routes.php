@@ -2,13 +2,15 @@
 
 namespace app\router;
 
-use app\router\route;
+use app\router\Route;
 
 class routes
 {
     public function getRoutes(string $location, string | null $locationPattern)
     {
         $routesInfo = [];
+
+        $updMethods = ['post', 'put', 'delete'];
         
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator(
@@ -37,20 +39,24 @@ class routes
                 }
 
                 $namespace = $class->getNamespaceName();
+                $props = $class->getDefaultProperties();
     
                 foreach ($class->getMethods() as $m) {
                     foreach (
                         $m->getAttributes(
-                            route::class,
+                            Route::class,
                             \ReflectionAttribute::IS_INSTANCEOF
                         ) as $attribute
                     ) {
                         $attr = $attribute->newInstance();
-                        $routesInfo[$namespace][$className][$m->name] = [
+                        $method = $m->name;
+                        $routesInfo[$namespace][$className][$method] = [
                             'method' => $attr->method,
                             'path' => $path,
-                            'pathname' => $attr->pathname,
-                            'payload' => $attr->payload,
+                            'endpoint' => $attr->endpoint,
+                            'payload' => in_array($method, $updMethods) && isset($props[$method . 'Payload'])
+                                ? $props[$method . 'Payload']
+                                : [],
                         ];
                     }
                 }

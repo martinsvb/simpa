@@ -55,11 +55,11 @@ function loadDocumentationInfo(string $location, string | null $locationPattern)
         ) {
             continue;
         }
-        
+
         if ($fileinfo->isFile() && $fileinfo->getExtension() === "php") {
             $path = mb_substr($fileinfo->getPathName(), 0, -4);
             $path = str_replace($replacePath, NULL, $path);
-  
+
             $class = new \ReflectionClass($path);
             
             $parent = $class->getParentClass();

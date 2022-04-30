@@ -20,6 +20,7 @@
         },
         "files": [
             "documentation/deployment/deploymentForm.php",
+            "documentation/deployment/deploymentsList.php",
             "documentation/deployment/deploymentProcess.php",
             "documentation/deployment/database/columnsSettings.php",
             "documentation/deployment/database/compareDBs.php",
@@ -29,6 +30,7 @@
             "documentation/deployment/database/Queries.php",
             "documentation/generator/docCode.php",
             "documentation/generator/docCodeMethods.php",
+            "documentation/generator/docApiOutput.php",
             "documentation/generator/docCodeOutput.php",
             "documentation/generator/docDatabaseTables.php",
             "documentation/generator/docDatabaseTablesOutput.php",

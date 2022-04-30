@@ -23,7 +23,7 @@ class excepDatabase
     {
         $this->e = $e;
         $excep = new excep();
-        $excep->handle($this, ['query' => $query, 'params' => implode(', ', $params)]);
+        $excep->handle($this, ['query' => $query, 'params' => json_encode($params)]);
     }
     
     public function getType()

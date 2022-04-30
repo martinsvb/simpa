@@ -1,6 +1,8 @@
 .docHeaderWrapper {
   display: flex;
   justify-content: space-between;
+  background-color: var(--grey);
+  padding: 4px 8px;
 }
 
 .docHeader {
@@ -9,21 +11,28 @@
 
 .docHeaderItem {
   cursor: pointer;
-  padding: 10px 15px;
+  padding: 4px 8px;
 }
 
 .docHeaderItemSelected {
-  background: var(--greyVeryLight);
   border-radius: 3px;
 }
 
+.docHeaderItemSelected .header-1 {
+  color: var(--greyVeryLight);
+}
+
+.userWrapper {
+  display: flex;
+  align-items: center;
+}
+
 .userName {
-  line-height: 4;
-  color: var(--grey);
+  color: var(--greyVeryLight);
 }
 
 .logoutLink {
-  line-height: 4;
   text-decoration: none;
   color: var(--blue);
+  margin-left: 4px;
 }

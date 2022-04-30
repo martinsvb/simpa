@@ -9,6 +9,7 @@
     --greyLight: #e5e5e5;
     --greyVeryLight: #ededed;
     --orange: #E5B442;
+    --red: #ff5959;
     --white: #ffffff;
     --MrgLeft1: 40px;
     --MrgLeft2: 70px;
@@ -16,10 +17,15 @@
 
 .docBody {
   font-family: 'arial';
+  margin: 0;
+}
+
+.docBodyItem {
+  margin: 0 4px;
 }
 
 .header-1 {
-    font-size: 34px;
+    font-size: 30px;
     font-weight: normal;
     color: var(--orange);
     margin: 0;
@@ -48,8 +54,8 @@
 }
 
 .header-2 {
-    font-size: 26px;
-    color: var(--grey);
+    font-size: 22px;
+    color: var(--greyDark);
     background: var(--blueLight);
     margin: 10px 0 0 5px;
     padding: 5px 10px 8px 10px;
@@ -65,7 +71,7 @@
 }
 
 .header-3 {
-    font-size: 22px;
+    font-size: 20px;
     margin-left: var(--MrgLeft1);
     margin-bottom: 12px;
 }
@@ -79,7 +85,7 @@
 .comment,
 .propertiesTitle,
 .properties {
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 10px;
 }
 
@@ -104,7 +110,7 @@
 }
 
 .properties {
-    color: var(--grey);
+    color: var(--greyDark);
     border-right: 1px solid var(--grey);
     border-bottom: 1px solid var(--grey);
     width: 600px;
@@ -165,13 +171,13 @@
   margin-bottom: 10px;
 }
 
-.docOpenDatabaseTable {
+.docOpenResource {
   color: var(--blue);
   cursor: pointer;
   text-decoration: underline;
 }
 
-.docOpenDatabaseTable:hover {
+.docOpenResource:hover {
   text-decoration: none;
 }
 
@@ -189,4 +195,13 @@
 
 .fontItalic {
   font-style: italic;
+}
+
+.availableWidth {
+  width: -webkit-fill-available;
+}
+
+.docApiResponse {
+  max-height: 300px;
+  overflow-y: scroll;
 }

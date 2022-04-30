@@ -16,7 +16,7 @@
 }
 
 .docTableCell {
-    color: var(--grey);
+    color: var(--greyDark);
     border: 1px solid var(--greyLight);
 }
 

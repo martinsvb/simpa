@@ -4,10 +4,14 @@ namespace app\database;
 
 use PDO;
 use app\exception\excepDatabase;
+use app\helpers\storage;
 
 /**
  * Database operations wrapper
  *
+ * @property $uuid, Unique id generating flag
+ * @property $data, Data value usage flag
+ * @property $_ds, Data storage instance
  * @property $_options, Database connection options
  * @property $_fetchMethods, PDO fetch methods list
  * @property $_host, Host name
@@ -16,26 +20,24 @@ use app\exception\excepDatabase;
  * @property $_excep, Exception handler
  * @property $_queries, Transaction queries definition
  * @property $_affectedIds, Queries affected Ids list
+ * @property $_selectionQueries, Selection queries names
  */
 class db extends PDO
 {
-    private static
-    
-    $_options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::ATTR_AUTOCOMMIT, false,
-    ],
-    
-    $selectionQue = ['SELECT', 'SHOW'];
-    
+    public $uuid = 'GENERATE_UNIQUE_ID';
+
+    public $data = 'USE_DATA_VALUE';
+
     private
+    $_ds,
     $_host,
     $_dbName,
     $_stmt,
     $_excep,
+    $_options,
     $_queries,
-    $_affectedIds;
+    $_affectedIds,
+    $_selectionQueries;
 
     public $fetchMethods = [
         'assoc' => PDO::FETCH_ASSOC,
@@ -53,6 +55,7 @@ class db extends PDO
      * @param string $user
      * @param string $password
      * @param string $database
+     * @param string $databasePort
      * @param string $charset (optional)
      */
     public function __construct(
@@ -60,18 +63,29 @@ class db extends PDO
         string $user,
         string $password,
         string $database,
+        string $databasePort,
         string $charset = 'utf8'
     ) {
         try {
+            $this->_options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_AUTOCOMMIT, false,
+            ];
+
+            $this->selectionQueries = ['SELECT', 'SHOW'];
+
             parent::__construct(
-                "mysql:host=$host;dbname=$database;port=3306;charset=$charset",
+                "mysql:dbname=$database;host=$host;port=$databasePort;charset=$charset",
                 $user,
                 $password,
-                self::$_options
+                $this->_options
             );
-            
+
             $this->_host = $host;
             $this->_dbName = $database;
+
+            $this->_ds = storage::getInstance();
         } catch (\PDOException $e) {
             throw new excepDatabase($e);
         }
@@ -108,7 +122,7 @@ class db extends PDO
         
         return $data;
     }
-    
+
     /**
      * Insert/Update queries execution
      *
@@ -140,7 +154,7 @@ class db extends PDO
         
         return $this->_affectedIds;
     }
-    
+
     /**
      * Set of Insert/Update queries transaction execution
      *
@@ -155,7 +169,6 @@ class db extends PDO
         $this->_transactionDefinitionUpdate();
 
         try {
-            $this->beginTransaction();
             $lockTables = array_map(
                 function($table) {
                     return mb_substr(mb_strstr($table, '@'), 1) . " WRITE";
@@ -164,15 +177,17 @@ class db extends PDO
             );
             $this->exec("LOCK TABLES " . implode(",", $lockTables));
 
+            $this->beginTransaction();
+
             $this->_affectedIds = [];
-            
+
             foreach ($this->queries as $name => $arr) {
                 $action = mb_strstr($name, '@', true);
                 $this->_stmt = $this->prepare($this->queries[$name]['query']);
                 foreach ($this->queries[$name]['queryParams'] as $key => $values) {
                     $exeResult = $this->_stmt->execute($values);
                     if ($action == 'insert' && $exeResult) {
-                        $this->_affectedIds[$name][] = $this->lastInsertId();
+                        $this->_affectedIds[$name][] = isset($values[':id']) ? $values[':id'] : $this->lastInsertId();
                     }
                     if ($action == 'update' && $exeResult) {
                         $this->_affectedIds[$name][] = $key;
@@ -180,8 +195,9 @@ class db extends PDO
                 }
             }
             
-            $this->exec("UNLOCK TABLES");
             $this->commit();
+
+            $this->exec("UNLOCK TABLES");
         }
         catch(\PDOException $e) {
             $this->rollBack();
@@ -217,6 +233,7 @@ class db extends PDO
             if ($action == 'insert') {
                 $arr['query'] = "INSERT INTO $table (" . implode(",", array_keys($arr['affectedColumns'])) . ") VALUES (" . implode(",", array_keys($this->queries[$name]['queryParams'][0])) . ")";
             }
+
             if ($action == 'update') {
                 $arr['updateColumns'] = $this->prepareUpdateColumns($arr['affectedColumns']);
                 $arr['queryParams'] = $this->addWhereColumns($arr['data'], $arr['queryParams'], $arr['where']);
@@ -224,7 +241,7 @@ class db extends PDO
             }
         }
     }
-    
+
     /**
      *  Process merge settings from queries definiton
      *
@@ -262,7 +279,7 @@ class db extends PDO
                         if (
                             !isset($arr['data'][$key][$targetCol]) &&
                             isset($this->queries[$linkQuery]['affectedColumns'][$sourceCol]) &&
-                            $this->queries[$linkQuery]['affectedColumns'][$sourceCol] !== "%data%"
+                            $this->queries[$linkQuery]['affectedColumns'][$sourceCol] !== $this->data
                         ) {
                             $arr['data'][$key][$targetCol] = $this->queries[$linkQuery]['affectedColumns'][$sourceCol];
                         }
@@ -273,7 +290,7 @@ class db extends PDO
         
         return $arr['data'];
     }
-    
+
     /**
      * Prepare query params regarding to affected columns and data
      *
@@ -288,16 +305,16 @@ class db extends PDO
         foreach ($data as $arrData) {
             $values = [];
             foreach ($affectedColumns as $column => $value) {
-                $values[":$column"] = $value == "%data%" && isset($arrData[$column])
+                $values[":$column"] = $value == $this->data && isset($arrData[$column])
                     ? $arrData[$column]
-                    : $value;
+                    : ($value === $this->uuid ? $this->_ds->getUniqueId() : $value);
             }
             $queryParams[] = $values;
         }
         
         return $queryParams;
     }
-    
+
     /**
      * Prepare list of updated columns names
      *
@@ -318,7 +335,7 @@ class db extends PDO
         
         return $updateColumns;
     }
-    
+
     /**
      * Add missing where statement columns from data to queryParams
      *
@@ -347,7 +364,7 @@ class db extends PDO
         
         return $queryParams;
     }
-    
+
     /**
      * Load data from db by inserted query
      *
@@ -396,7 +413,7 @@ class db extends PDO
             : $this->_stmt->execute();
 
         // All table's records or one concrete
-        if (in_array(mb_substr($query, 0, mb_strpos($query, " ")), self::$selectionQue)) {
+        if (in_array(mb_substr($query, 0, mb_strpos($query, " ")), $this->selectionQueries)) {
             $fetchMode = $assoc===1 ? PDO::FETCH_ASSOC : PDO::FETCH_NUM;
             $data = $all===1
                 ? $this->_stmt->fetchAll($fetchMode)
@@ -434,12 +451,12 @@ class db extends PDO
     {
         return $this->_host;
     }
-    
+
     public function getDbName()
     {
         return $this->_dbName;
     }
-    
+
     public function getQuery() {
         return $this->_stmt->queryString;
     }

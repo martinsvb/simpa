@@ -53,11 +53,12 @@ class controller
             $dbConnection['host'],
             $dbConnection['user'],
             $dbConnection['password'],
-            $dbConnection['database']
+            $dbConnection['database'],
+            $dbConnection['databasePort'],
         );
         
         $this->resp = new resp();
-        
+
         $this->excep = new excep();
         
         $this->csv = new csv();

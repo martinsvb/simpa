@@ -14,6 +14,8 @@
 <link rel="stylesheet" type="text/css" href="/vendor/martinsvb/simpa/documentation/css/docStylesHeader.css" />
 <link rel="stylesheet" type="text/css" href="/vendor/martinsvb/simpa/documentation/css/docStylesTable.css" />
 
+<script src="/vendor/martinsvb/simpa/documentation/callApi.js" language="JavaScript" type="text/javascript"></script>
+<script src="/vendor/martinsvb/simpa/documentation/clearResponse.js" language="JavaScript" type="text/javascript"></script>
 <script src="/vendor/martinsvb/simpa/documentation/docScripts.js" language="JavaScript" type="text/javascript"></script>
 <script src="/vendor/martinsvb/simpa/documentation/uniqueId.js" language="JavaScript" type="text/javascript"></script>
 

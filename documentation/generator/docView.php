@@ -87,5 +87,10 @@ function getDescription(
 
 function getLinkToDatabaseTable(string $descriptionItem)
 {
-    return "<span class='docOpenDatabaseTable' onClick='docOpenDatabaseTable(\"code-$descriptionItem\")'>$descriptionItem</span>";
+    return "<span class='docOpenResource' onClick='docOpenDatabaseTable(\"code-$descriptionItem\")'>$descriptionItem</span>";
+}
+
+function getLinkToController(string $module, string $controller)
+{
+    return "<span class='docOpenResource' onClick='docOpenController(\"$module\", \"$controller\")'>Controller: $module\\$controller</span>";
 }

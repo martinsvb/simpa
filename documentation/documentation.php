@@ -4,6 +4,7 @@ namespace documentation;
 
 use function documentation\deployment\deploymentForm\generateDeploymentForm;
 use function documentation\generator\docHeader\generateDocHeader;
+use function documentation\generator\docApiOutput\generateApiOutput;
 use function documentation\generator\docCodeOutput\generateDocOutput;
 use function documentation\generator\docDatabaseTablesOutput\generateDocDatabaseTablesOutput;
 use function documentation\logs\logsOutput\generateLogsOutput;
@@ -21,9 +22,11 @@ $deploymentOperation = isset($_POST['button']) && in_array($_POST['button'], arr
 
 generateDocHeader($deploymentOperation ? 'deployment' : null);
 
+generateApiOutput($deploymentOperation ? 'hide' : null);
+
 $docDatabaseTables = generateDocDatabaseTablesOutput();
 
-generateDocOutput($docDatabaseTables, $deploymentOperation ? 'hide' : null);
+generateDocOutput($docDatabaseTables);
 
 generateDeploymentForm($deploymentOperation ? null : 'hide', $deploymentOperation, $docDatabaseTables);
 
