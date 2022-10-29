@@ -27,7 +27,8 @@ class router
     private $_allowedMethods = [
         'GET', // Read
         'POST', // Create
-        'PUT', // Update/Replace
+        'PATCH', // Update
+        'PUT', // Replace
         'DELETE' // Delete
     ];
     
@@ -68,7 +69,7 @@ class router
         
         $this->_params = $this->_getParams(mb_substr($_SERVER['REQUEST_URI'], mb_strlen('/api/')));
         
-        if ($this->_method == 'POST' || $this->_method == 'PUT') {
+        if ($this->_method == 'POST' || $this->_method == 'PATCH' || $this->_method == 'PUT') {
             $this->_data = json_decode(file_get_contents('php://input'), true);
         }
         
@@ -92,7 +93,7 @@ class router
         header("Access-Control-Allow-Origin: $origin");
         header('Access-Control-Allow-Credentials: true');
         header("Access-Control-Allow-Headers: $headers");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS, DELETE");
+        header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, OPTIONS, DELETE");
         
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             exit(0);
